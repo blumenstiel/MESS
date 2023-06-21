@@ -1,6 +1,5 @@
 
-# Code adapted from ov-seg/datasets/prepare_pascal_context.py
-# run python mess/datasets/prepare/prepare_chased_b1.py
+# run python mess/prepare_datasets/prepare_chased_b1.py
 
 import tqdm
 import os

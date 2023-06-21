@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_uavid.py
+# run python mess/prepare_datasets/prepare_uavid.py
 
 # The 8 classes and corresponding label color (R,G,B) are as follows:
 # Background clutter       	(0,0,0)

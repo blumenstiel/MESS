@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_pst900.py
+# run python mess/prepare_datasets/prepare_pst900.py
 
 import tqdm
 import os

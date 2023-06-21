@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_cryonuseg.py
+# run python mess/prepare_datasets/prepare_cryonuseg.py
 
 import tqdm
 import os

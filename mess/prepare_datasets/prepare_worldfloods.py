@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_worldfloods.py
+# run python mess/prepare_datasets/prepare_worldfloods.py
 
 import torch
 import tqdm

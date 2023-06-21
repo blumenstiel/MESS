@@ -34,7 +34,7 @@ def main():
     assert ds_path.exists(), f'Dataset not found in {ds_path}'
 
     for split in ['val']:
-        mask_dir = Path(ds_path) / f'gt/split/night/GOPR0356'
+        mask_dir = Path(ds_path) / f'gt/{split}/night/GOPR0356'
         anno_dir = Path(ds_path) / 'annotations_detectron2' / split
         anno_dir.mkdir(parents=True, exist_ok=True)
 

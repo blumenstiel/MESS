@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_corrosion_cs.py
+# run python mess/prepare_datasets/prepare_corrosion_cs.py
 
 import tqdm
 import os

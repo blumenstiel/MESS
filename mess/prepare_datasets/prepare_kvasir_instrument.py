@@ -1,5 +1,5 @@
 
-# run python datasets/prepare_kvasir_instrument.py
+# run python mess/prepare_datasets/prepare_kvasir_instrument.py
 
 import tqdm
 import os

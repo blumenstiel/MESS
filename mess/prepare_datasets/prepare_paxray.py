@@ -232,6 +232,10 @@ def main():
 
         print(f'Saved {split} images and masks for {", ".join(target_labels.values())} of {ds_path.name} dataset')
 
+        # delete original labels to save disk space
+        os.system(f'rm -r {ds_path / "labels"}')
+        print(f'Deleted original labels of {ds_path.name} dataset to save disk space')
+
 
 if __name__ == '__main__':
     main()

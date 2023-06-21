@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_cub_200.py
+# run python mess/prepare_datasets/prepare_cub_200.py
 
 import tqdm
 import os

@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_suim.py
+# run python mess/prepare_datasets/prepare_suim.py
 
 import tqdm
 import os
@@ -56,7 +56,7 @@ def main():
         anno_dir = ds_path / 'annotations_detectron2' / split
         os.makedirs(anno_dir, exist_ok=True)
 
-        for mask_path in tqdm.tqdm((ds_path / split.upper() / 'masks').glob('*.bmp')):
+        for mask_path in tqdm.tqdm(sorted((ds_path / split.upper() / 'masks').glob('*.bmp'))):
             # Open mask
             mask = Image.open(mask_path)
             mask = np.array(mask)

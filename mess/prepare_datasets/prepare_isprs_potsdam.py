@@ -1,5 +1,5 @@
 
-# run python mess/datasets/prepare/prepare_isprs_potsdam.py
+# run python mess/prepare_datasets/prepare_isprs_potsdam.py
 
 import tqdm
 import os

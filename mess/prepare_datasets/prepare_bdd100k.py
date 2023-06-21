@@ -1,6 +1,5 @@
 
-# Code adapted from ov-seg/datasets/prepare_pascal_context.py
-# run python mess/datasets/prepare/prepare_bdd100k.py
+# run python mess/prepare_datasets/prepare_bdd100k.py
 
 import tqdm
 import os
@@ -17,18 +16,18 @@ def download_dataset(dataset_dir):
     Downloads the dataset
     """
     print('Unzip dataset...')
-    zip_dir = '' if os.path.isfile('bdd100k_images_10k.zip') else 'datasets/'
-    assert os.path.isfile(zip_dir + 'bdd100k_images_10k.zip'), \
+    zip_dir = Path('') if os.path.isfile('bdd100k_images_10k.zip') else Path(dataset_dir)
+    assert os.path.isfile(zip_dir / 'bdd100k_images_10k.zip'), \
         'bdd100k_images_10k.zip not found, ' \
-        'please download 10K images from https://bdd-data.berkeley.edu/ and place zip in datasets'
-    assert os.path.isfile(zip_dir + 'bdd100k_sem_seg_labels_trainval.zip'), \
+        'please download 10K images and segmentation from https://bdd-data.berkeley.edu/ and place zip in the dataset dir'
+    assert os.path.isfile(zip_dir / 'bdd100k_sem_seg_labels_trainval.zip'), \
         'bdd100k_sem_seg_labels_trainval.zip not found, ' \
-        'please download segmentation from https://bdd-data.berkeley.edu/ and place zip in datasets'
+        'please download 10K images and segmentation from https://bdd-data.berkeley.edu/ and place zip in the dataset dir'
 
-    os.system(f'unzip {zip_dir}bdd100k_images_10k.zip -d {dataset_dir}')
-    os.system(f'unzip {zip_dir}bdd100k_sem_seg_labels_trainval.zip -d {dataset_dir}')
-    os.system(f'rm {zip_dir}bdd100k_images_10k.zip')
-    os.system(f'rm {zip_dir}bdd100k_sem_seg_labels_trainval.zip')
+    os.system(f'unzip {zip_dir / "bdd100k_images_10k.zip"} -d {dataset_dir}')
+    os.system(f'unzip {zip_dir / "bdd100k_sem_seg_labels_trainval.zip"} -d {dataset_dir}')
+    os.system(f'rm {zip_dir / "bdd100k_images_10k.zip"}')
+    os.system(f'rm {zip_dir / "bdd100k_sem_seg_labels_trainval.zip"}')
 
 
 def main():

@@ -1,15 +1,14 @@
 # Description: This script prepares all datasets
-# Usage: python mess/prepare_datasets/prepare_all_datasets.py --dataset_dir datasets
+# Usage: python mess/prepare_all_datasets.py --dataset_dir datasets
 
 import kaggle
 import os
 import argparse
-import mess.datasets
 from detectron2.data import DatasetCatalog
-from mess.prepare_datasets import (
+from prepare_datasets import (
+    prepare_bdd100k,
     prepare_mhp_v1,
     prepare_foodseg,
-    prepare_bdd100k,
     prepare_dark_zurich,
     prepare_atlantis,
     prepare_dram,
@@ -38,17 +37,15 @@ if __name__ == '__main__':
     parser.add_argument('--stats', action='store_true', help='Only show dataset statistics')
     args = parser.parse_args()
 
-    # set dataset directory
+    # set dataset directory and register datasets
     os.environ['DETECTRON2_DATASETS'] = args.dataset_dir
-
-    # check if current working directory is project root
-    assert os.getcwd().endswith('OVSS'), 'Please run this script from project root'
+    import datasets
 
     # prepare datasets
     dataset_dict = {
+        'dark_zurich_sem_seg_val': prepare_dark_zurich,
         'mhp_v1_sem_seg_test': prepare_mhp_v1,
         'foodseg103_sem_seg_test': prepare_foodseg,
-        'dark_zurich_sem_seg_val': prepare_dark_zurich,
         'atlantis_sem_seg_test': prepare_atlantis,
         'dram_sem_seg_test': prepare_dram,
         'isaid_sem_seg_val': prepare_isaid,
@@ -65,7 +62,7 @@ if __name__ == '__main__':
         'cub_200_sem_seg_test': prepare_cub_200,
         'cwfid_sem_seg_test': prepare_cwfid,
 
-        ############################ Manual preparation ############################
+        ### Manual preparation ###
         # Place the manually downloaded zip files in the dataset directory or the root of the project.
 
         # Download 10k images and segmentation labels from https://bdd-data.berkeley.edu/ and place zip in datasets

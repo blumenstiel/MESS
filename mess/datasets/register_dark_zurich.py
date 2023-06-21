@@ -17,7 +17,7 @@ def register_dataset(root):
     root = os.path.join(root, 'Dark_Zurich')
 
     for split, image_dirname, sem_seg_dirname, class_names in [
-        ('val', 'rgb_anon/val/night/GOPR0356', 'gt/val_detectron2', CLASSES),
+        ('val', 'rgb_anon/val/night/GOPR0356', 'annotations_detectron2/val', CLASSES),
     ]:
         image_dir = os.path.join(root, image_dirname)
         gt_dir = os.path.join(root, sem_seg_dirname)

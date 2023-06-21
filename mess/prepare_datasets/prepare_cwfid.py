@@ -36,7 +36,6 @@ def main():
         # create directory
         anno_dir = ds_path / 'annotations_detectron2' / split
         os.makedirs(anno_dir, exist_ok=True)
-        os.makedirs(anno_dir / 'vegetation', exist_ok=True)
 
         ids = test_ids if split == 'test' else train_ids
         for id in tqdm.tqdm(ids):
