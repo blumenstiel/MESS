@@ -14,3 +14,4 @@ python -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wh
 pip install gdown
 pip install kaggle
 pip install rasterio
+pip install pandas

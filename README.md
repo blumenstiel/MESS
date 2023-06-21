@@ -1,6 +1,6 @@
 # Multi-domain Evaluation of Semantic Segmentation (MESS)
 
-[[Website](https://github.io)] [[arXiv](https://arxiv.org)]
+[[Website (soon)](https://github.io)] [[arXiv (soon)](https://arxiv.org)]
 
 This is the official toolkit for the MESS benchmark from our Paper "What a MESS: Multi-domain Evaluation of Zero-shot Semantic Segmentation".
 
@@ -14,7 +14,7 @@ You can register the datasets to Detectron2 by adding `import mess.datasets` to 
 ## Evaluation
 
 Our evaluation focus on zero-shot transfer models as they are designed to generalize to unseen datasets. We evaluated eight model architectures with publicly available weights on the MESS benchmark.
-We present the aggregated results in the following table and refer to the supplementary material of our paper for per-dataset results.
+We present the aggregated results in the following table and refer to the supplementary material of our paper for the dataset-wise results.
 
 
 | Model                                                                        |   General |   Earth Monitoring |   Medical Sciences | Engineering |   Agriculture and Biology |   Mean |
@@ -35,13 +35,13 @@ We present the aggregated results in the following table and refer to the supple
 | [CAT-Seg-H](https://github.com/KU-CVLAB/CAT-Seg)                             |     37.98 |              37.74 |              34.65 |       29.04 |                     37.76 |  35.66 |
 | [Grounded-SAM-H](https://github.com/IDEA-Research/Grounded-Segment-Anything) |     30.27 |              26.44 |              38.45 |       28.16 |                     17.67 |  28.78 |
 
-<sup>1</sup> Random is a lower bound. The values represent the expected mean IoU with uniform class distribution.
+<sup>1</sup> Random is a lower bound. The values represent the expected mIoU from predictions with uniform class distribution.
 
 <sup>2</sup> Supervised are recent supervised models for each dataset individually. We refer to our paper for the details.
 
 ### Model adaptions
 
-We provide the adapted code for the evaluated models in separate repositories (currently work in progress):
+We provide the adapted code for the evaluated models in separate repositories:
 
 - ZSSeg: https://github.com/blumenstiel/zsseg.baseline-MESS
 - ZegFormer: https://github.com/blumenstiel/ZegFormer-MESS
@@ -50,19 +50,23 @@ We provide the adapted code for the evaluated models in separate repositories (c
 - SAN: https://github.com/blumenstiel/SAN-MESS
 - OpenSeeD: https://github.com/blumenstiel/OpenSeeD-MESS
 - CAT-Seg: https://github.com/blumenstiel/CAT-Seg-MESS
-- Grounded-SAM: https://github.com/blumenstiel/Grounded-SAM-MESS
+- Grounded-SAM: https://github.com/blumenstiel/Grounded-SAM-MESS (soon)
 
-We also evaluated SAM in a point-to-mask and box-to-mask setting using oracle prompts and provide the Code at https://github.com/blumenstiel/SAM-MESS.
+We also evaluated SAM in a point-to-mask and box-to-mask setting using oracle prompts and provide the Code at https://github.com/blumenstiel/SAM-MESS (soon).
 
 ## TODOs
 
-- [ ] Add general evaluation code
-- [ ] Publish code of evaluated models   
+- [ ] Publish code for Grounded-SAM and SAM   
 - [ ] Add preprocessing code for training sets to enable few-shot and supervised settings
 
 ## License
 
 The code is released under the [MIT License](LICENSE). The evaluated datasets are released under their respective licenses, see [DATASETS.md](mess/DATASETS.md) for details. Most datasets are limited to non-commercial use only and require a citation which are provided in [mess/datasets.bib](mess/datasets.bib).
+
+## Acknowledgement
+
+We would like to acknowledge the work of the dataset providers, especially for the careful collection and annotation of the datasets. Thank you for making the dataset publicly available!
+See [DATASETS.md](mess/DATASETS.md) for more details and links to the datasets. We like to further thank the authors of the evaluated models for their work and providing the model weights.
 
 ## Citation
 
@@ -74,9 +78,4 @@ If you use the MESS benchmark, please cite our paper:
   author={Blumenstiel, Benedikt and Jakubik, Johannes and Kühne, Hilde and Vössing, Michael},
   year={2023}
 }
-``` 
-
-## Acknowledgement
-
-We would like to acknowledge the work of the dataset providers, especially for the careful collection and annotation of the datasets. Thank you for making the dataset publicly available!
-See [DATASETS.md](mess/DATASETS.md) for more details and links to the datasets. We like to further thank the authors of the evaluated models for their work and providing the model weights.
+```
