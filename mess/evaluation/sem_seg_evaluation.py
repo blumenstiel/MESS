@@ -42,8 +42,8 @@ class MESSSemSegEvaluator(SemSegEvaluator):
         num_classes=None,
         ignore_label=None,
         post_process_func=None,
-        compute_grounding_iou=True,
-        compute_boundary_iou=True,
+        compute_grounding_iou=False,
+        compute_boundary_iou=False,
     ):
         super().__init__(
             dataset_name,
@@ -91,13 +91,10 @@ class MESSSemSegEvaluator(SemSegEvaluator):
                 segmentation prediction in the same format.
         """
         for input, output in zip(inputs, outputs):
-            output = self.post_process_func(
-                output["sem_seg"], image=np.array(Image.open(input["file_name"]))
-            )
-            output = output.to(self._cpu_device)
             # get predictions
+            output = self.post_process_func(output["sem_seg"])
             # Change: drop model-specific "no object" class by using only the first num_classes predictions
-            pred = np.array(output[:self._num_classes].argmax(dim=0), dtype=int)
+            pred = np.array(output[:self._num_classes].argmax(dim=0).to(self._cpu_device), dtype=int)
 
             # get ground truth
             with PathManager.open(
@@ -105,12 +102,6 @@ class MESSSemSegEvaluator(SemSegEvaluator):
             ) as f:
                 gt = np.array(Image.open(f), dtype=int)
             gt[gt == self._ignore_label] = self._num_classes
-
-            # get grounding predictions (class names reduced to classes visible in the image)
-            gt_classes = np.unique(gt)
-            gt_classes = gt_classes[gt_classes != self._num_classes]
-            grounding_pred = np.array(output[gt_classes].argmax(dim=0), dtype=int)
-            grounding_pred = gt_classes[grounding_pred]
 
             # add to confusion matrix
             self._conf_matrix += np.bincount(
@@ -130,6 +121,12 @@ class MESSSemSegEvaluator(SemSegEvaluator):
 
             # add to grounding confusion matrix
             if self._compute_grounding_iou:
+                # get grounding predictions (class names reduced to classes visible in the image)
+                gt_classes = np.unique(gt)
+                gt_classes = gt_classes[gt_classes != self._num_classes]
+                grounding_pred = np.array(output[gt_classes].argmax(dim=0).to(self._cpu_device), dtype=int)
+                grounding_pred = gt_classes[grounding_pred]
+
                 self._grounding_conf_matrix += np.bincount(
                     (self._num_classes + 1) * grounding_pred.reshape(-1) + gt.reshape(-1),
                     minlength=self._conf_matrix.size,
