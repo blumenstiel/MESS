@@ -1,8 +1,8 @@
 
 # This script combines the results of from the single datasets for the MESS results
-# run the script from the root of the project with:
+# run script from the root of the project with
 # python mess/evaluation/mess_evaluation.py --model_outputs /path/to/model_outputs
-# e.g., python mess/evaluation/mess_evaluation.py --model_outputs output/SAN_base output/SAN_large
+# e.g. python mess/evaluation/mess_evaluation.py --model_outputs output/SAN_base output/SAN_large
 
 import argparse
 import torch
@@ -31,7 +31,7 @@ dataset_names = {
     'paxray_combined': 'PAXRay-4',
     'corrosion_cs_sem_seg_test': 'Corrosion CS',
     'deepcrack_sem_seg_test': 'DeepCrack',
-    'pst900_sem_seg_test_thermal': 'PST900',
+    'pst900_sem_seg_test': 'PST900',
     'zerowaste_sem_seg_test': 'ZeroWaste-f',
     'suim_sem_seg_test': 'SUIM',
     'cub_200_sem_seg_test': 'CUB-200',
@@ -60,7 +60,7 @@ dataset_domains = {
     'paxray_combined': 'Medical Sciences',
     'corrosion_cs_sem_seg_test': 'Engineering',
     'deepcrack_sem_seg_test': 'Engineering',
-    'pst900_sem_seg_test_thermal': 'Engineering',
+    'pst900_sem_seg_test': 'Engineering',
     'zerowaste_sem_seg_test': 'Engineering',
     'suim_sem_seg_test': 'Agriculture and Biology',
     'cub_200_sem_seg_test': 'Agriculture and Biology',
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     # Parser
     parser = argparse.ArgumentParser(description='Prepare datasets')
     parser.add_argument('--model_outputs', nargs='+', type=str, help='Directory of to model outputs.'
-                                                           'Multiple models can be specified by separating their '
+                                                           'Mulitple models can be specified by separating their '
                                                            'output dirs with a space')
     parser.add_argument('--metrics', nargs='+', default=['mIoU', 'CoI-mIoU'],
                         help='A list of the evaluation metrics to be used')
@@ -155,6 +155,9 @@ if __name__ == '__main__':
             mean_results[metric] = [results[results['Model'] == output_dir.name][metric].mean()]
         results = pd.concat([results, mean_results], ignore_index=True)
 
+    # Save order of datasets
+    datasets_order = [d for d in dataset_names.values() if d in results['Dataset'].values] + ['Mean']
+
     # Set index to dataset and model
     results.set_index(['Dataset', 'Model'], inplace=True, drop=True)
 
@@ -162,13 +165,14 @@ if __name__ == '__main__':
     results_dir = Path(args.results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
 
-    results.fillna('-').to_csv(results_dir / 'results.csv')
+    results.round(2).fillna('-').to_csv(results_dir / 'results.csv')
     for metric in args.metrics:
         metric_results = results.fillna('-').unstack(1)[metric].T
-        metric_results.to_csv(results_dir / f'results_{metric}.csv')
+        metric_results = metric_results[datasets_order]
+        metric_results.round(2).to_csv(results_dir / f'results_{metric}.csv')
 
     # Group results by domain
-    results_by_domain = results.groupby(['Model', 'Domain'], sort=False).mean()
+    results_by_domain = results.groupby(['Model', 'Domain'], sort=False).mean().round(2)
     results_by_domain.to_csv(results_dir / 'domain_results.csv')
     for metric in args.metrics:
         domain_metric_results = results_by_domain.fillna('-').unstack(0)[metric].T
