@@ -39,6 +39,7 @@ if __name__ == '__main__':
 
     # set dataset directory and register datasets
     os.environ['DETECTRON2_DATASETS'] = args.dataset_dir
+    os.makedirs(args.dataset_dir, exist_ok=True)
     import datasets
 
     # prepare datasets
