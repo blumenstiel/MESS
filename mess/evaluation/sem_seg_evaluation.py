@@ -1,31 +1,18 @@
 
-# Original class detectron2.evaluation.SemSegEvaluator
-# Changes:
-# Forces a prediction if models predict a no_object class
-# Added report of Specificity and Sensitivity
-# Added Class of Interest as an evaluation subset
-# Added boundary IoU from a newer version of detectron2.SemSegEvaluator
-# Added Grounding IoU as described in the paper
-# Ghiasi, G. et al. (2022). Scaling open-vocabulary image segmentation with image-level labels. ECCV.
+# Extends the detectron2.evaluation.SemSegEvaluator by an additional evaluation subset (classes_of_interest)
+# Additionally reports CoI-mIoU as well as specificity and sensitivity for datasets with two classes
 
 import itertools
 import json
 import numpy as np
 import os
 from collections import OrderedDict
-import PIL.Image as Image
 import torch
 
-from detectron2.data import DatasetCatalog, MetadataCatalog
+from detectron2.data import MetadataCatalog
 from detectron2.utils.comm import all_gather, is_main_process, synchronize
 from detectron2.utils.file_io import PathManager
 from detectron2.evaluation import SemSegEvaluator
-
-_CV2_IMPORTED = True
-try:
-    import cv2
-except ImportError:
-    _CV2_IMPORTED = False
 
 
 class MESSSemSegEvaluator(SemSegEvaluator):
@@ -41,9 +28,6 @@ class MESSSemSegEvaluator(SemSegEvaluator):
         *,
         num_classes=None,
         ignore_label=None,
-        post_process_func=None,
-        compute_grounding_iou=False,
-        compute_boundary_iou=False,
     ):
         super().__init__(
             dataset_name,
@@ -53,86 +37,10 @@ class MESSSemSegEvaluator(SemSegEvaluator):
             ignore_label=ignore_label,
         )
         meta = MetadataCatalog.get(dataset_name)
-        self.post_process_func = (
-            post_process_func
-            if post_process_func is not None
-            else lambda x, **kwargs: x
-        )
-        if self._num_classes == 1:
-            # Add "others" class for contrastive segmentation
-            self._num_classes = 2
-            self.reset()
         if hasattr(meta, 'classes_of_interest'):
             self.classes_of_interest = np.bincount(meta.classes_of_interest, minlength=self._num_classes).astype(bool)
         else:
             self.classes_of_interest = np.ones(self._num_classes).astype(bool)
-
-        self._compute_grounding_iou = compute_grounding_iou
-        self._compute_boundary_iou = compute_boundary_iou
-        if not _CV2_IMPORTED:
-            self._compute_boundary_iou = False
-        if self._num_classes >= np.iinfo(np.uint8).max:
-            self._compute_boundary_iou = False
-
-    def reset(self):
-        self._conf_matrix = np.zeros((self._num_classes + 1, self._num_classes + 1), dtype=np.int64)
-        self._b_conf_matrix = np.zeros((self._num_classes + 1, self._num_classes + 1), dtype=np.int64)
-        self._grounding_conf_matrix = np.zeros((self._num_classes + 1, self._num_classes + 1), dtype=np.int64)
-        self._predictions = []
-
-    def process(self, inputs, outputs):
-        """
-        Args:
-            inputs: the inputs to a model.
-                It is a list of dicts. Each dict corresponds to an image and
-                contains keys like "height", "width", "file_name".
-            outputs: the outputs of a model. It is either list of semantic segmentation predictions
-                (Tensor [H, W]) or list of dicts with key "sem_seg" that contains semantic
-                segmentation prediction in the same format.
-        """
-        for input, output in zip(inputs, outputs):
-            # get predictions
-            output = self.post_process_func(output["sem_seg"])
-            # Change: drop model-specific "no object" class by using only the first num_classes predictions
-            pred = np.array(output[:self._num_classes].argmax(dim=0).to(self._cpu_device), dtype=int)
-
-            # get ground truth
-            with PathManager.open(
-                self.input_file_to_gt_file[input["file_name"]], "rb"
-            ) as f:
-                gt = np.array(Image.open(f), dtype=int)
-            gt[gt == self._ignore_label] = self._num_classes
-
-            # add to confusion matrix
-            self._conf_matrix += np.bincount(
-                (self._num_classes + 1) * pred.reshape(-1) + gt.reshape(-1),
-                minlength=self._conf_matrix.size,
-            ).reshape(self._conf_matrix.shape)
-
-            # add to boundary confusion matrix
-            if self._compute_boundary_iou:
-                b_gt = self._mask_to_boundary(gt.astype(np.uint8))
-                b_pred = self._mask_to_boundary(pred.astype(np.uint8))
-
-                self._b_conf_matrix += np.bincount(
-                    (self._num_classes + 1) * b_pred.reshape(-1) + b_gt.reshape(-1),
-                    minlength=self._conf_matrix.size,
-                ).reshape(self._conf_matrix.shape)
-
-            # add to grounding confusion matrix
-            if self._compute_grounding_iou:
-                # get grounding predictions (class names reduced to classes visible in the image)
-                gt_classes = np.unique(gt)
-                gt_classes = gt_classes[gt_classes != self._num_classes]
-                grounding_pred = np.array(output[gt_classes].argmax(dim=0).to(self._cpu_device), dtype=int)
-                grounding_pred = gt_classes[grounding_pred]
-
-                self._grounding_conf_matrix += np.bincount(
-                    (self._num_classes + 1) * grounding_pred.reshape(-1) + gt.reshape(-1),
-                    minlength=self._conf_matrix.size,
-                ).reshape(self._conf_matrix.shape)
-
-            self._predictions.extend(self.encode_json_sem_seg(pred, input["file_name"]))
 
     def evaluate(self):
         """
@@ -140,6 +48,7 @@ class MESSSemSegEvaluator(SemSegEvaluator):
 
         * Mean intersection-over-union averaged across classes (mIoU)
         * Frequency Weighted IoU (fwIoU)
+        * Mean intersection-over-union averaged across classes of interest (CoI-mIoU)
         * Mean pixel accuracy averaged across classes (mACC)
         * Pixel Accuracy (pACC)
         """
@@ -166,7 +75,7 @@ class MESSSemSegEvaluator(SemSegEvaluator):
         acc = np.full(self._num_classes, np.nan, dtype=float)
         iou = np.full(self._num_classes, np.nan, dtype=float)
         tp = self._conf_matrix.diagonal()[:-1].astype(float)
-        # Change: Consider the no object predictions as well
+        # Change: Consider potential no-object predictions for pos_gt
         # pos_gt = np.sum(self._conf_matrix[:-1, :-1], axis=0).astype(float)
         pos_gt = np.sum(self._conf_matrix, axis=0).astype(float)[:-1]
         class_weights = pos_gt / np.sum(pos_gt)
@@ -184,50 +93,17 @@ class MESSSemSegEvaluator(SemSegEvaluator):
         coi_miou = np.sum(iou[self.classes_of_interest & acc_valid]) / np.sum(self.classes_of_interest & iou_valid)
         coi_macc = np.sum(acc[self.classes_of_interest & acc_valid]) / np.sum(self.classes_of_interest & acc_valid)
 
-        if self._compute_boundary_iou:
-            b_iou = np.full(self._num_classes, np.nan, dtype=float)
-            b_tp = self._b_conf_matrix.diagonal()[:-1].astype(float)
-            b_pos_gt = np.sum(self._b_conf_matrix, axis=0).astype(float)[:-1]
-            b_pos_pred = np.sum(self._b_conf_matrix[:-1, :-1], axis=1).astype(float)
-            b_union = b_pos_gt + b_pos_pred - b_tp
-            b_iou_valid = b_union > 0
-            b_iou[b_iou_valid] = b_tp[b_iou_valid] / b_union[b_iou_valid]
-            b_miou = np.sum(b_iou[b_iou_valid]) / np.sum(b_iou_valid)
-
-        if self._compute_grounding_iou:
-            g_iou = np.full(self._num_classes, np.nan, dtype=float)
-            g_acc = np.full(self._num_classes, np.nan, dtype=float)
-            g_tp = self._grounding_conf_matrix.diagonal()[:-1].astype(float)
-            g_pos_gt = np.sum(self._grounding_conf_matrix, axis=0).astype(float)[:-1]
-            g_pos_pred = np.sum(self._grounding_conf_matrix[:-1, :-1], axis=1).astype(float)
-            g_union = g_pos_gt + g_pos_pred - g_tp
-            g_iou_valid = g_union > 0
-            g_iou[g_iou_valid] = g_tp[g_iou_valid] / g_union[g_iou_valid]
-            g_miou = np.sum(g_iou[g_iou_valid]) / np.sum(g_iou_valid)
-            g_acc_valid = pos_gt > 0
-            g_acc[g_acc_valid] = g_tp[g_acc_valid] / g_pos_gt[g_acc_valid]
-            g_macc = np.sum(g_acc[g_acc_valid]) / np.sum(g_acc_valid)
-
         res = {}
         res["mIoU"] = 100 * miou
+        res["CoI-mIoU"] = 100 * coi_miou
         res["fwIoU"] = 100 * fiou
         for i, name in enumerate(self._class_names):
             res["IoU-{}".format(name)] = 100 * iou[i]
         res["mACC"] = 100 * macc
         res["pACC"] = 100 * pacc
-        if self._compute_boundary_iou:
-            res["bmIoU"] = 100 * b_miou
-            for i, name in enumerate(self._class_names):
-                res["bIoU-{}".format(name)] = 100 * b_iou[i]
-        if self._compute_grounding_iou:
-            res["gmIoU"] = 100 * g_miou
-            for i, name in enumerate(self._class_names):
-                res["gIoU-{}".format(name)] = 100 * g_iou[i]
-            res["gmACC"] = 100 * g_macc
         if self._num_classes == 2:
             res["Specificity"] = 100 * acc[0]
             res["Sensitivity"] = 100 * acc[1]
-        res["CoI-mIoU"] = 100 * coi_miou
         res["CoI-mACC"] = 100 * coi_macc
         for i, name in enumerate(self._class_names):
             res[f"ACC-{name.lower()}"] = 100 * acc[i]
@@ -240,15 +116,3 @@ class MESSSemSegEvaluator(SemSegEvaluator):
         self._logger.info(results)
         return results
 
-    def _mask_to_boundary(self, mask: np.ndarray, dilation_ratio=0.02):
-        assert mask.ndim == 2, "mask_to_boundary expects a 2-dimensional image"
-        h, w = mask.shape
-        diag_len = np.sqrt(h**2 + w**2)
-        dilation = max(1, int(round(dilation_ratio * diag_len)))
-        kernel = np.ones((3, 3), dtype=np.uint8)
-
-        padded_mask = cv2.copyMakeBorder(mask, 1, 1, 1, 1, cv2.BORDER_CONSTANT, value=0)
-        eroded_mask_with_padding = cv2.erode(padded_mask, kernel, iterations=dilation)
-        eroded_mask = eroded_mask_with_padding[1:-1, 1:-1]
-        boundary = mask - eroded_mask
-        return boundary

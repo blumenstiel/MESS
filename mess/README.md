@@ -1,6 +1,6 @@
-# Multi-domain Evaluation of Semantic Segmentation (MESS)
+# MESS – Multi-domain Evaluation of Semantic Segmentation
 
-[[Website (soon)](https://github.io)] [[arXiv (soon)](https://arxiv.org/)] [[GitHub](https://github.com/blumenstiel/MESS)]
+[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv (soon)](https://arxiv.org/)] [[GitHub](https://github.com/blumenstiel/MESS)]
 
 This directory contains the code for the MESS benchmark. The benchmark covers 22 datasets and is currently designed for zero-shot semantic segmentation.
 
@@ -8,9 +8,9 @@ This directory contains the code for the MESS benchmark. The benchmark covers 22
 
 Place this `mess` directory to your project, and follow the steps in [DATASETS.md](DATASETS.md) for downloading and preparing the datasets.
 
-You can register the datasets to Detectron2 by adding `import mess.datasets` to your evaluation code.
+You can register the datasets to detectron2 by adding `import mess.datasets` to your evaluation code.
 
-For evaluating all datasets with a Detectron2 model, you can use the following script:
+For evaluating all datasets with a detectron2 model, you can use the following script:
 ```sh
 conda activate <your_env>
 
@@ -25,11 +25,10 @@ done
 You can combine the results of the seperate datasets with the following script.
 ```sh
 python mess/evaluation/mess_evaluation.py --model_outputs output/<model_name> output/<model2_name> <...>
-# default values: --metrics [mIoU, CoI-mIoU], --results_dir results/
+# default values: --metrics [mIoU], --results_dir results/
 ```
 
-We also provide an adapted evaluator class `MESSSemSegEvaluator` in `mess.evaluation` and scripts to use the datasets with MMSegmentation and Torchvision. Note that you still have to install Detectron2 and register the datasets.
-The `MESSSemSegEvaluator` considers the no-object predictions for the ground truth count which are ignored in the default `SemSegEvaluator`.
+We also provide an adapted evaluator class `MESSSemSegEvaluator` in `mess.evaluation` to calculate the mIoU for classes of interest (CoI-mIoU). Scripts to use the datasets with MMSegmentation and Torchvision are also included. Note that you still have to install detectron2 and register the datasets.
 
 ```python
 # MMSegmentation 
@@ -53,8 +52,8 @@ To evaluate your model on the MESS benchmark, you can use the following steps:
 
 - [ ] Register the datasets to Detectron2 by adding `import mess.datasets` to your evaluation code.
 
-- [ ] Use the `MESSSemSegEvaluator` as your evaluator class.
-
 - [ ] Use the class names from `MetadataCatalog.get(dataset_name).stuff_classes` of each dataset.
 
-For exemplary code changes, see [commit `1b5c5ee`](https://github.com/blumenstiel/CAT-Seg-MESS/commit/1b5c5ee103b60cc98af316f554c2a945a78856ca#diff-f4cc0633616b54356e2812aed5ce92d444e6d7c06673799b517fe6f74920a584) in https://github.com/blumenstiel/CAT-Seg-MESS. 
+- [ ] Use the `MESSSemSegEvaluator` as your evaluator class (optional).
+
+For exemplary code changes, see [commit `1b5c5ee`](https://github.com/blumenstiel/CAT-Seg-MESS/commit/1b5c5ee103b60cc98af316f554c2a945a78856ca#diff-f4cc0633616b54356e2812aed5ce92d444e6d7c06673799b517fe6f74920a584) in <https://github.com/blumenstiel/CAT-Seg-MESS>. 

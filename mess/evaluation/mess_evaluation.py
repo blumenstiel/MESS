@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_outputs', nargs='+', type=str, help='Directory of to model outputs.'
                                                            'Mulitple models can be specified by separating their '
                                                            'output dirs with a space')
-    parser.add_argument('--metrics', nargs='+', default=['mIoU', 'CoI-mIoU'],
+    parser.add_argument('--metrics', nargs='+', default=['mIoU'],
                         help='A list of the evaluation metrics to be used')
     parser.add_argument('--results_dir', type=str, default='results', help='Results directory')
     args = parser.parse_args()
