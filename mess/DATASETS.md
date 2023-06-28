@@ -50,7 +50,7 @@ conda actviate mess
 
 python mess/prepare_all_datasets.py --dataset_dir datasets
 
-# your can check the preperation with
+# your can check the preparation with
 python mess/prepare_all_datasets.py --dataset_dir datasets --stats
 ```
 

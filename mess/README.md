@@ -1,6 +1,6 @@
 # MESS – Multi-domain Evaluation of Semantic Segmentation
 
-[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv (soon)](https://arxiv.org/)] [[GitHub](https://github.com/blumenstiel/MESS)]
+[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv](https://arxiv.org/abs/2306.15521)] [[GitHub](https://github.com/blumenstiel/MESS)]
 
 This directory contains the code for the MESS benchmark. The benchmark covers 22 datasets and is currently designed for zero-shot semantic segmentation.
 

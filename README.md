@@ -1,6 +1,6 @@
 # MESS – Multi-domain Evaluation of Semantic Segmentation
 
-[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv](https://arxiv.org)]
+[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv](https://arxiv.org/abs/2306.15521)]
 
 This is the official toolkit for the MESS benchmark from our Paper "What a MESS: Multi-domain Evaluation of Zero-shot Semantic Segmentation".
 
@@ -28,13 +28,13 @@ See [DATASETS.md](mess/DATASETS.md) for more details and links to the datasets. 
 
 ## Citation
 
-Please cite our paper if you use the MESS benchmark and send us the results to be included in the leaderboard.
+Please cite our paper if you use the MESS benchmark and send us your results to be included in the leaderboard.
 
 ```
 @article{MESSBenchmark2023,
   title={{What a MESS: Multi-domain Evaluation of Zero-shot Semantic Segmentation}},
   author={Blumenstiel, Benedikt and Jakubik, Johannes and Kühne, Hilde and Vössing, Michael},
-  journal={arXiv preprint arXiv:XXXX.XXXXX},
+  journal={arXiv preprint arXiv:2306.15521},
   year={2023}
 }
 ```
