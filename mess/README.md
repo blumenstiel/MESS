@@ -56,4 +56,18 @@ To evaluate your model on the MESS benchmark, you can use the following steps:
 
 - [ ] Use the `MESSSemSegEvaluator` as your evaluator class (optional).
 
-For exemplary code changes, see [commit `1b5c5ee`](https://github.com/blumenstiel/CAT-Seg-MESS/commit/1b5c5ee103b60cc98af316f554c2a945a78856ca#diff-f4cc0633616b54356e2812aed5ce92d444e6d7c06673799b517fe6f74920a584) in <https://github.com/blumenstiel/CAT-Seg-MESS>. 
+For exemplary code changes, see [commit `1b5c5ee`](https://github.com/blumenstiel/CAT-Seg-MESS/commit/1b5c5ee103b60cc98af316f554c2a945a78856ca#diff-f4cc0633616b54356e2812aed5ce92d444e6d7c06673799b517fe6f74920a584) in <https://github.com/blumenstiel/CAT-Seg-MESS>.
+
+
+## Citation
+
+If you use the MESS benchmark, please cite our paper:
+
+```
+@article{MESSBenchmark2023,
+  title={{What a MESS: Multi-Domain Evaluation of Zero-shot Semantic Segmentation}},
+  author={Blumenstiel, Benedikt and Jakubik, Johannes and Kühne, Hilde and Vössing, Michael},
+  journal={arXiv preprint arXiv:2306.15521},
+  year={2023}
+}
+```

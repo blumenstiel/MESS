@@ -1,7 +1,6 @@
 # Description: This script prepares all datasets
 # Usage: python mess/prepare_all_datasets.py --dataset_dir datasets
 
-import kaggle
 import os
 import argparse
 from detectron2.data import DatasetCatalog

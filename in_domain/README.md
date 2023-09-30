@@ -1,6 +1,10 @@
 # In-domain Evaluation for Zero-shot Semantic Segmentation
 
-This directory contains the code for the preparation and registration of in-domain datasets of zero-shot semantic segmentation that are typically trained on COCO-Stuff. The code is similar to the preparation scripts from [CAT-Seg](https://github.com/KU-CVLAB/CAT-Seg).
+[[Website](https://blumenstiel.github.io/mess-benchmark/)] [[arXiv](https://arxiv.org/abs/2306.15521)] [[GitHub](https://github.com/blumenstiel/MESS)]
+
+This directory contains the code for the preparation and registration of five in-domain datasets that are typically used in zero-shot semantic segmentation. We refer to the [supplementary material](https://arxiv.org/abs/2306.15521) for further details of the datasets and the results from the evaluated models. The preparation code is similar to the scripts from [CAT-Seg](https://github.com/KU-CVLAB/CAT-Seg). 
+
+For more information about the usage of this directory, see [mess/README.md](../mess/README.md).
 
 ## Prepare the datasets
 
@@ -22,7 +26,7 @@ python in_domain/prepare_in_domain_datasets.py --dataset_dir datasets --stats
 
 If the automatic downloads do not work, please consider the descriptions below.
 
-If you are using another dataset directory than `datasets`, you have to export it as the `DETECTRON2_DATASETS` environment variable before evaluating the models (see `mess/eval.sh`). E.g, `export DETECTRON2_DATASETS=../in_domain_datasets` when evaluating multiple models.
+If you are using another dataset directory than `datasets`, you have to export it as the `DETECTRON2_DATASETS` environment variable before evaluating the models (see `in_domain/eval.sh`). E.g, `export DETECTRON2_DATASETS=../in_domain_datasets` when evaluating multiple models.
 
 ## In-domain dataset overview
 
