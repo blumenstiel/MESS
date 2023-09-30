@@ -1,11 +1,10 @@
 
 # run python mess/prepare_datasets/prepare_dark_zurich.py
 
-import tqdm
 import os
-from pathlib import Path
-
+import tqdm
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 DARK_ZURICH_LABELS = (0, 7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33)

@@ -1,12 +1,11 @@
 
 # run python mess/prepare_datasets/prepare_worldfloods.py
 
-import torch
-import tqdm
 import os
+import tqdm
+import gdown
 import rasterio
 import numpy as np
-import gdown
 from pathlib import Path
 from PIL import Image
 

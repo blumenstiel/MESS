@@ -1,14 +1,8 @@
 
 # run python mess/prepare_datasets/prepare_zerowaste.py
 
-import tqdm
 import os
 from pathlib import Path
-import gdown
-import kaggle
-
-import numpy as np
-from PIL import Image
 
 
 def download_dataset(ds_path):

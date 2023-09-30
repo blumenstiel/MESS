@@ -1,15 +1,11 @@
 
 # run python mess/prepare_datasets/prepare_atlantis.py
 
-import tqdm
 import os
-from pathlib import Path
-import gdown
-import kaggle
-
+import tqdm
 import numpy as np
+from pathlib import Path
 from PIL import Image
-
 color_to_class = {c: i for i, c in enumerate(range(1, 57))}
 color_to_class[0] = 255
 

@@ -1,13 +1,12 @@
 
 # run python mess/prepare_datasets/prepare_paxray.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
 import json
-
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 # all labels

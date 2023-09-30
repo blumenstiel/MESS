@@ -1,13 +1,11 @@
 
 # run python mess/prepare_datasets/prepare_cryonuseg.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
-import kaggle
-
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 
@@ -16,14 +14,15 @@ def download_dataset(ds_path):
     Downloads the dataset
     """
     print('Downloading dataset...')
-    # Downloading kaggle
-    try:
-        kaggle.api.authenticate()
-    except:
-        raise Exception('Please install kaggle and save credentials in ~/.kaggle/kaggle.json, '
-                        'see https://github.com/Kaggle/kaggle-api')
-    # CLI: kaggle datasets download -d ipateam/segmentation-of-nuclei-in-cryosectioned-he-images
-    kaggle.api.dataset_download_cli('ipateam/segmentation-of-nuclei-in-cryosectioned-he-images', path=ds_path, unzip=True)
+    # Download from Google Drive
+    # Folder: https://drive.google.com/drive/folders/1dgtO_mCcR4UNXw_4zK32NlakbAvnySck
+    gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1Or8qSpwLx77ZcWFqOKCKd3upwTUvb0U6")
+    gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1WHork0VjF1PTye1xvCTtPtly62uHF72J")
+    os.makedirs(ds_path, exist_ok=True)
+    os.system('unzip FINAL.zip -d ' + str(ds_path))
+    os.system('unzip masks.zip -d ' + str(ds_path))
+    os.system('rm FINAL.zip')
+    os.system('rm masks.zip')
 
 
 def main():
@@ -48,8 +47,7 @@ def main():
         img.save(img_dir / f'{id}.png', 'PNG')
 
         # Open mask
-        mask = Image.open(ds_path / 'Annotator 1 (biologist second round of manual marks up)'
-                        / 'Annotator 1 (biologist second round of manual marks up)' / 'mask binary' / f'{id}.png')
+        mask = Image.open(ds_path / 'mask binary' / f'{id}.png')
         # Edit annotations
         # Binary encoding: (0, 255) -> (0, 1)
         mask = np.uint8(np.array(mask) / 255)

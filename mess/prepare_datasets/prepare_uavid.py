@@ -1,6 +1,12 @@
 
 # run python mess/prepare_datasets/prepare_uavid.py
 
+import os
+import tqdm
+import numpy as np
+from pathlib import Path
+from PIL import Image
+
 # The 8 classes and corresponding label color (R,G,B) are as follows:
 # Background clutter       	(0,0,0)
 # Building			(128,0,0)
@@ -10,15 +16,6 @@
 # Moving car			(64,0,128)
 # Static car			(192,0,192)
 # Human				(64,64,0)
-
-import tqdm
-import os
-from pathlib import Path
-import gdown
-import kaggle
-
-import numpy as np
-from PIL import Image
 
 
 def download_dataset(dataset_dir, ds_path):

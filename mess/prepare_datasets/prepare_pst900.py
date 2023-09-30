@@ -1,13 +1,12 @@
 
 # run python mess/prepare_datasets/prepare_pst900.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
-import matplotlib.pyplot as plt
-
 import numpy as np
+import matplotlib.pyplot as plt
+from pathlib import Path
 from PIL import Image
 
 # Using 'inferno' color map for thermal images

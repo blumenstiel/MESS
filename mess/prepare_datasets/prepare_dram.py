@@ -3,11 +3,8 @@
 
 import tqdm
 import os
-from pathlib import Path
-import gdown
-import kaggle
-
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 vocId_to_classId = {

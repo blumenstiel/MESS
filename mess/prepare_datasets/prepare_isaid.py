@@ -1,13 +1,13 @@
 
 # run python mess/prepare_datasets/prepare_isaid.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
-
 import numpy as np
+from pathlib import Path
 from PIL import Image
+
 
 # iSAID dataset color to class mapping
 color_to_class = {0: [0, 0, 0],  # unlabeled

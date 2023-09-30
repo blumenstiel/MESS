@@ -1,11 +1,10 @@
 
 # run python mess/prepare_datasets/prepare_isprs_potsdam.py
 
-import tqdm
 import os
-from pathlib import Path
-
+import tqdm
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 # Impervious surfaces (RGB: 255, 255, 255)

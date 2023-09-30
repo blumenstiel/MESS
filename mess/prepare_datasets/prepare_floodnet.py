@@ -1,13 +1,10 @@
 
 # run python mess/prepare_datasets/prepare_floodnet.py
 
-import tqdm
 import os
-from pathlib import Path
-import gdown
-import kaggle
-
+import tqdm
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 

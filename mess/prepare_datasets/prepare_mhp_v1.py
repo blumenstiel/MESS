@@ -1,12 +1,11 @@
 
 # run python mess/prepare_datasets/prepare_mhp_v1.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
-
 import numpy as np
+from pathlib import Path
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 

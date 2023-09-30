@@ -21,8 +21,6 @@ bash mess/setup_env.sh
 
 Note, that the DRAM dataset is compressed in a rar file. You may need to install unrar to extract it: `sudo apt install unrar`.
 
-Also, `kaggle` requires a valid Kaggle API key to download the datasets, see https://github.com/Kaggle/kaggle-api.
-
 ### Manual install
 Alternatively, you can install an environment with the following steps:
 
@@ -32,13 +30,10 @@ Next, create a new python environment (>=3.6). Install [torch](https://pytorch.o
 
 Install the following packages:
 ```sh
-gdown
-kaggle
-rasterio
-pandas
+pip install gdown rasterio pandas
 ```
 
-If needed, install unrar and save your Kaggle API key.
+If needed, install unrar.
 
 ## Dataset download and preparation
 
@@ -394,7 +389,9 @@ CryoNuSeg only includes a test set. Other datasets can be used for training.
 
 If the download does not work, download the dataset manually from Kaggle and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
-Kaggle: https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images
+Google Drive images: https://drive.google.com/file/d/1Or8qSpwLx77ZcWFqOKCKd3upwTUvb0U6/view?usp=drive_link
+
+Google Drive masks: https://drive.google.com/file/d/1WHork0VjF1PTye1xvCTtPtly62uHF72J/view?usp=drive_link
 
 ### PAXRay-4
 
@@ -562,12 +559,4 @@ If the download does not work, download the git repo manually and place the data
 
 ### BibTeX
 
-We provide all BibTeX entries for the dataset papers in the [datasets.bib](datasets.bib) file. The BibTeX entries are named after the dataset with the pattern "Dataset<Name>", while " " and "-" are removed from the name. If you use the MESS benchmark, please cite our paper:
-
-```
-@article{MESSBenchmark2023,
-  title={What a MESS: Multi-domain Evaluation of Zero-shot Semantic Segmentation},
-  author={Blumenstiel, Benedikt and Jakubik, Johannes and Kühne, Hilde and Vössing, Michael},
-  year={2023}
-}
-```
+We provide all BibTeX entries for the dataset papers in the [datasets.bib](datasets.bib) file. The BibTeX entries are named after the dataset with the pattern "Dataset<Name>", while " " and "-" are removed from the name. 

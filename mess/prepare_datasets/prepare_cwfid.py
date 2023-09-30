@@ -1,11 +1,10 @@
 
 # run python mess/prepare_datasets/prepare_cwfid.py
 
-import tqdm
 import os
-from pathlib import Path
-
+import tqdm
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 train_ids = [2, 5, 6, 7, 8, 11, 12, 14, 16, 17, 18, 19, 20, 23, 24, 25, 27, 28, 31, 33, 34, 36, 37, 38, 40, 41, 42, 43,

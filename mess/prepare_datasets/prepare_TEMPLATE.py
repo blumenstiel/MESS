@@ -1,13 +1,11 @@
 
 # run python mess/prepare_datasets/prepare_<DATASET NAME>.py
 
-import tqdm
 import os
-from pathlib import Path
+import tqdm
 import gdown
-import kaggle
-
 import numpy as np
+from pathlib import Path
 from PIL import Image
 
 
@@ -32,18 +30,6 @@ def download_dataset(ds_path):
     gdown.download(id='<FILE ID>')
     # When access is denied
     gdown.download(f"https://drive.google.com/uc?export=download&confirm=pbef&id=<FILE ID>")
-    os.system('unzip <DATASET>.zip -d ' + str(ds_path))
-    os.system('rm <DATASET>.zip')
-
-    # Downloading kaggle
-    try:
-        kaggle.api.authenticate()
-    except:
-        raise Exception('Please install kaggle and save credentials in ~/.kaggle/kaggle.json, '
-                        'see https://github.com/Kaggle/kaggle-api')
-    kaggle.api.dataset_download_cli('<DATASET NAME>', path=ds_path, unzip=True)
-    # competition requires manual unzip
-    kaggle.api.competition_download_cli('<DATASET>')
     os.system('unzip <DATASET>.zip -d ' + str(ds_path))
     os.system('rm <DATASET>.zip')
 
