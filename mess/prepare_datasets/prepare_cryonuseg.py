@@ -19,7 +19,7 @@ def download_dataset(ds_path):
     gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1Or8qSpwLx77ZcWFqOKCKd3upwTUvb0U6")
     gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1WHork0VjF1PTye1xvCTtPtly62uHF72J")
     os.makedirs(ds_path, exist_ok=True)
-    os.system('unzip FINAL.zip -d ' + str(ds_path))
+    os.system('unzip Final.zip -d ' + str(ds_path))
     os.system('unzip masks.zip -d ' + str(ds_path))
     os.system('rm Final.zip')
     os.system('rm masks.zip')
