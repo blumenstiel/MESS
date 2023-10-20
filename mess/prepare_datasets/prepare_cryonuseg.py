@@ -21,7 +21,7 @@ def download_dataset(ds_path):
     os.makedirs(ds_path, exist_ok=True)
     os.system('unzip FINAL.zip -d ' + str(ds_path))
     os.system('unzip masks.zip -d ' + str(ds_path))
-    os.system('rm FINAL.zip')
+    os.system('rm Final.zip')
     os.system('rm masks.zip')
 
 
