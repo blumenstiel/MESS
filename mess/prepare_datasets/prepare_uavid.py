@@ -85,7 +85,7 @@ def main():
             img = img.convert('RGB')
             tiles = get_tiles(img, padding=0)
             for i, tile in enumerate(tiles):
-                tile.save(img_dir / f'{id}_{i}.png')
+                Image.fromarray(tile).save(img_dir / f'{id}_{i}.png')
 
             # Open mask
             mask = Image.open(str(img_path).replace('Images', 'Labels'))
