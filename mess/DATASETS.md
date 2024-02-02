@@ -9,6 +9,7 @@ Some manual downloads are required:
 - FloodNet: https://drive.google.com/drive/folders/1leN9eWVQcvWDVYwNb2GCo5ML_wBEycWD (Download Directory or test folder)
 - ISPRS Potsdam: https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx (Potsdam)
 - UAVid: https://uavid.nl (Download -> Semantic Labelling with Images Only)
+- CryoNuSeg: https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images (Download from Kaggle; Directory name 'archive')
 
 You can place the downloaded files in the project root or unzip in the datasets directory.
 
@@ -381,17 +382,11 @@ Licence: CC BY-NC-SA 4.0 (https://www.kaggle.com/datasets/ipateam/segmentation-o
 
 Citation (Attribution) required. Non-commercial use only.
 
-Download and prepare the dataset by running:
+Download the dataset manually from [Kaggle](https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images), place the directory into the project root and prepare the dataset by running:
 ```sh
 python mess/prepare_datasets/prepare_cryonuseg.py
 ```
 CryoNuSeg only includes a test set. Other datasets can be used for training.
-
-If the download does not work, download the dataset manually from Kaggle and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
-
-Google Drive images: https://drive.google.com/file/d/1Or8qSpwLx77ZcWFqOKCKd3upwTUvb0U6/view?usp=drive_link
-
-Google Drive masks: https://drive.google.com/file/d/1WHork0VjF1PTye1xvCTtPtly62uHF72J/view?usp=drive_link
 
 ### PAXRay-4
 

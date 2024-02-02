@@ -9,27 +9,29 @@ from pathlib import Path
 from PIL import Image
 
 
-def download_dataset(ds_path):
+def check_dataset(dataset_dir, ds_path):
     """
-    Downloads the dataset
+    Check dataset and rename it
     """
-    print('Downloading dataset...')
-    # Download from Google Drive
-    # Folder: https://drive.google.com/drive/folders/1dgtO_mCcR4UNXw_4zK32NlakbAvnySck
-    gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1Or8qSpwLx77ZcWFqOKCKd3upwTUvb0U6")
-    gdown.download("https://drive.google.com/uc?export=download&confirm=pbef&id=1WHork0VjF1PTye1xvCTtPtly62uHF72J")
-    os.makedirs(ds_path, exist_ok=True)
-    os.system('unzip Final.zip -d ' + str(ds_path))
-    os.system('unzip masks.zip -d ' + str(ds_path))
-    os.system('rm Final.zip')
-    os.system('rm masks.zip')
+    KAGGLE_DIR_NAME = 'archive'
+    if os.path.exists(KAGGLE_DIR_NAME):
+        # Move Kaggle dir to dataset directroy
+        os.system(f'mv {KAGGLE_DIR_NAME} {dataset_dir}')
+
+    assert os.path.exists(dataset_dir / KAGGLE_DIR_NAME), \
+        ("Download dataset from Kaggle "
+         "(https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images?resource=download) "
+         f"and place the directroy {KAGGLE_DIR_NAME} into the project root or dataset directory.")
+
+    # Rename dataset
+    os.system(f'mv {dataset_dir / KAGGLE_DIR_NAME} {ds_path}')
 
 
 def main():
     dataset_dir = Path(os.getenv('DETECTRON2_DATASETS', 'datasets'))
     ds_path = dataset_dir / 'CryoNuSeg'
     if not ds_path.exists():
-        download_dataset(ds_path)
+        check_dataset(dataset_dir, ds_path)
 
     assert ds_path.exists(), f'Dataset not found in {ds_path}'
 
@@ -47,7 +49,8 @@ def main():
         img.save(img_dir / f'{id}.png', 'PNG')
 
         # Open mask
-        mask = Image.open(ds_path / 'mask binary' / f'{id}.png')
+        mask = Image.open(ds_path / 'Annotator 1 (biologist second round of manual marks up)'
+                          / 'Annotator 1 (biologist second round of manual marks up)' / 'mask binary' / f'{id}.png')
         # Edit annotations
         # Binary encoding: (0, 255) -> (0, 1)
         mask = np.uint8(np.array(mask) / 255)
