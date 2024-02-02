@@ -29,6 +29,7 @@ from prepare_datasets import (
     prepare_cwfid,
 )
 
+
 def check_datasets(dataset_list):
     expected_dataset_length = {
         'bdd100k_sem_seg_val': 1000,
@@ -66,7 +67,7 @@ def check_datasets(dataset_list):
             elif length == expected_dataset_length[dataset_name]:
                 status = f'{length} images (OK)'
             else:
-                status = f'{length} images (f{expected_dataset_length[dataset_name]} images expected)'
+                status = f'{length} images ({expected_dataset_length[dataset_name]} images expected)'
                 missing_datasets.append(dataset_name)
         except FileNotFoundError:
             status = 'Dataset not found'
