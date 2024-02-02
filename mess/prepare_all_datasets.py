@@ -29,6 +29,58 @@ from prepare_datasets import (
     prepare_cwfid,
 )
 
+def check_datasets(dataset_list):
+    expected_dataset_length = {
+        'bdd100k_sem_seg_val': 1000,
+        'dark_zurich_sem_seg_val': 50,
+        'mhp_v1_sem_seg_test': 980,
+        'foodseg103_sem_seg_test': 2125,
+        'atlantis_sem_seg_test': 1295,
+        'dram_sem_seg_test': 718,
+        'isaid_sem_seg_val': 4055,
+        'isprs_potsdam_sem_seg_test_irrg': 504,
+        'worldfloods_sem_seg_test_irrg': 160,
+        'floodnet_sem_seg_test': 5571,
+        'uavid_sem_seg_val': 840,
+        'kvasir_instrument_sem_seg_test': 118,
+        'chase_db1_sem_seg_test': 20,
+        'cryonuseg_sem_seg_test': 30,
+        'paxray_sem_seg_test_lungs': 180,
+        'corrosion_cs_sem_seg_test': 44,
+        'deepcrack_sem_seg_test': 237,
+        'zerowaste_sem_seg_test': 929,
+        'pst900_sem_seg_test': 288,
+        'suim_sem_seg_test': 110,
+        'cub_200_sem_seg_test': 5794,
+        'cwfid_sem_seg_test': 21,
+    }
+
+    # print status of datasets
+    print('\nDataset status:')
+    missing_datasets = []
+    for dataset_name in dataset_list:
+        try:
+            length = len(DatasetCatalog.get(dataset_name))
+            if length == 0:
+                status = 'No images found'
+            elif length == expected_dataset_length[dataset_name]:
+                status = f'{length} images (OK)'
+            else:
+                status = f'{length} images (f{expected_dataset_length[dataset_name]} images expected)'
+                missing_datasets.append(dataset_name)
+        except FileNotFoundError:
+            status = 'Dataset not found'
+            missing_datasets.append(dataset_name)
+        except AssertionError:
+            status = 'Dataset not found'
+            missing_datasets.append(dataset_name)
+        print(f'{dataset_name:50s} {status}')
+    if len(missing_datasets) == 0:
+        print('All datasets processed.')
+    else:
+        print(f'Found missing datasets or images in: {", ".join(missing_datasets)}.')
+
+
 if __name__ == '__main__':
     # parser to get dataset directory
     parser = argparse.ArgumentParser(description='Prepare datasets')
@@ -75,16 +127,7 @@ if __name__ == '__main__':
         'uavid_sem_seg_val': prepare_uavid,
     }
 
-    # print status of datasets
-    print('Dataset: Status')
-    for dataset_name in dataset_dict.keys():
-        try:
-            status = f'{len(DatasetCatalog.get(dataset_name))} images'
-        except FileNotFoundError:
-            status = 'Not found'
-        except AssertionError:
-            status = 'Not found'
-        print(f'{dataset_name:50s} {status}')
+    check_datasets(dataset_dict.keys())
 
     if args.stats:
         exit()
@@ -110,12 +153,4 @@ if __name__ == '__main__':
 
     # print status of datasets
     print('\nFinished preparing datasets')
-    print('\nDataset: Status')
-    for dataset_name in dataset_dict.keys():
-        try:
-            status = f'{len(DatasetCatalog.get(dataset_name))} images'
-        except FileNotFoundError:
-            status = 'Not found'
-        except AssertionError:
-            status = 'Not found'
-        print(f'{dataset_name:50s} {status}')
+    check_datasets(dataset_dict.keys())
