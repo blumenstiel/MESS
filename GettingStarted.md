@@ -41,6 +41,12 @@ dataset = build_mmseg_dataset(cfg)
 import mess.datasets
 from mess.datasets.TorchvisionDataset import TorchvisionDataset
 dataset = TorchvisionDataset('<dataset_name>', transform, mask_transform)
+
+# The dataset return an image-segmentation mask pair with the gt mask values being the class indices.
+# After running the preparation script, check some samples with:
+dataset = TorchvisionDataset('dark_zurich_sem_seg_val', transform=None, mask_transform=None)
+for image, gt in dataset:
+    break
 ```
 
 ## In-domain datasets
