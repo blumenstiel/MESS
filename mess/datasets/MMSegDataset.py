@@ -1,5 +1,9 @@
 
-from detectron2.data import DatasetCatalog, MetadataCatalog
+try:
+    from detectron2.data import DatasetCatalog, MetadataCatalog
+except:
+    from mess.utils.catalog import DatasetCatalog, MetadataCatalog
+
 from mmseg.datasets import build_dataset
 from pathlib import Path
 

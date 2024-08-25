@@ -1,8 +1,13 @@
 import os
 
-from detectron2.data import DatasetCatalog, MetadataCatalog
-from detectron2.data.datasets import load_sem_seg
-from detectron2.utils.colormap import colormap
+try:
+    from detectron2.data import DatasetCatalog, MetadataCatalog
+    from detectron2.data.datasets import load_sem_seg
+    from detectron2.utils.colormap import colormap
+except:
+    from mess.utils.catalog import DatasetCatalog, MetadataCatalog
+    from mess.utils.data import load_sem_seg
+    from mess.utils.colormap import colormap
 
 CLASSES = (
     'road',
