@@ -11,9 +11,8 @@ The website includes a [leaderboard](https://blumenstiel.github.io/mess-benchmar
 
 ## Usage
 
-To test a new model architecture, download this repository, copy the `mess` directory to your project, and follow the steps in [mess/DATASETS.md](mess/DATASETS.md) for downloading and preparing the datasets.
-You can register the datasets to detectron2 by adding `import mess.datasets` to your evaluation code. See [mess/README.md](mess/README.md) for more details. 
-The `in_domain` directory includes scripts to evaluate your model on five commonly used test datasets.   
+To test a new model architecture, install the benchmark with `pip install mess-benchmark`, and follow the steps in [DATASETS.md](DATASETS.md) for downloading and preparing the datasets.
+You can register all datasets by running `import mess.datasets`. See [GettingStarted.md](GettingStarted.md) for more details.
 
 ### Zero-shot semantic segmentation
 
@@ -33,12 +32,12 @@ Therefore, we propose to exclude DRAM and WorldFloods from the few-shot and many
 
 ## License
 
-This code is released under the [MIT License](LICENSE). The evaluated datasets are released under their respective licenses, see [DATASETS.md](mess/DATASETS.md) for details. Most datasets are limited to non-commercial use only and require a citation which are provided in [mess/datasets.bib](mess/datasets.bib).
+This code is released under the [MIT License](LICENSE). The evaluated datasets are released under their respective licenses, see [DATASETS.md](DATASETS.md) for details. Most datasets are limited to non-commercial use only and require a citation which are provided in [datasets.bib](datasets.bib).
 
 ## Acknowledgement
 
 We would like to acknowledge the work of the dataset providers, especially for the careful collection and annotation of the datasets. Thank you for making the dataset publicly available!
-See [DATASETS.md](mess/DATASETS.md) for more details and links to the datasets. We like to further thank the authors of the evaluated models for their work and providing the model weights.
+See [DATASETS.md](DATASETS.md) for more details and links to the datasets. We like to further thank the authors of the evaluated models for their work and providing the model weights.
 
 ## Citation
 

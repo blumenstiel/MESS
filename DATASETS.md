@@ -11,49 +11,31 @@ Some manual downloads are required:
 - UAVid: https://uavid.nl (Download -> Semantic Labelling with Images Only)
 - CryoNuSeg: https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images (Download from Kaggle; Directory name 'archive')
 
-You can place the downloaded files in the project root or unzip in the datasets directory.
+You can place the downloaded files in the project root or unzip in your data directory.
 
 ## Install environment
 
-The processing of the datasets require certain packages. You can create a new environment `mess` and install all packages (except `unrar`) by running:
-```sh
-bash mess/setup_env.sh
-```
-
+The processing of the datasets require certain packages. You can install all pypi packages with `pip install mess-benchmark`.
 Note, that the DRAM dataset is compressed in a rar file. You may need to install unrar to extract it: `sudo apt install unrar`.
 
-### Manual install
-Alternatively, you can install an environment with the following steps:
-
-Copy the `mess` folder to your project root.
-
-Next, create a new python environment (>=3.6). Install [torch](https://pytorch.org/get-started/previous-versions/), followed by `detectron2`. Please consider compatible versions between these packages, see https://detectron2.readthedocs.io/en/latest/tutorials/install.html for further install instructions.
-
-Install the following packages:
-```sh
-pip install gdown rasterio pandas
-```
-
-If needed, install unrar.
+If you plan to use `detectron2` for your modeling, we provide a script for setting up the environment in [setup_env.sh](setup_env.sh).
+See https://detectron2.readthedocs.io/en/latest/tutorials/install.html for further install instructions. `detectron2` is not required for loading the datasets.
 
 ## Dataset download and preparation
 
 You can download and prepare all datasets by running the following script. Note that the datasets are provided by external parties and are not associated with this repository. Please consider the terms and conditions of each dataset, which are linked below.
 
 ```bash
-# Activate a working environment
-conda actviate mess
-
-python mess/prepare_all_datasets.py --dataset_dir datasets
+python -m mess.prepare_all_datasets --dataset_dir datasets
 
 # your can check the preparation with
-python mess/prepare_all_datasets.py --dataset_dir datasets --stats
+python -m mess.prepare_all_datasets --dataset_dir datasets --stats
 ```
 
 Four datasets require a manual download that are listed above.
 If the automatic downloads do not work, please consider the descriptions below.
 
-If you are using another dataset directory than `datasets`, you have to export it as the `DETECTRON2_DATASETS` environment variable before evaluating the models (see `mess/eval.sh`). E.g, `export DETECTRON2_DATASETS=../mess_datasets` when evaluating multiple models.
+If you are using another dataset directory than `datasets`, you have to export it as the `DETECTRON2_DATASETS` environment variable before evaluating the models (see `eval.sh`). E.g, `export DETECTRON2_DATASETS=../mess_datasets` when evaluating multiple models.
 
 ## Dataset overview
 We provide an overview of all datasets in the following. Please note the different licenses of the datasets. 
@@ -90,11 +72,11 @@ Datasets:
 
 ### Custom datasets
 
-We provide two templates to provide guidance for adding custom datasets: `mess/prepare_datasets/prepare_TEMPLATE.py` and `mess/datasets/register_TEMPLATE.py`.
+We provide two templates to provide guidance for adding custom datasets: `mess.prepare_datasets.prepare_TEMPLATE` and `mess.datasets/register_TEMPLATE`.
 
 ### BDD100K
 
-Detectron2 name: `bdd100k_sem_seg_val`
+Registered name: `bdd100k_sem_seg_val`
 
 Dataset page: https://bdd-data.berkeley.edu
 
@@ -107,12 +89,12 @@ Non-commercial use only. Commercial use only for BDD members.
 Download the dataset from https://bdd-data.berkeley.edu/ (bdd100k_images_10k.zip and bdd100k_sem_seg_labels_trainval.zip) and place the zip files in the project root or datasets folder. Prepare the dataset by running:
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_bdd100k.py
+python -m mess.prepare_datasets.prepare_bdd100k
 ```
 
 ### Dark Zurich
 
-Detectron2 name: `dark_zurich_sem_seg_val`
+Registered name: `dark_zurich_sem_seg_val`
 
 Dataset page: https://www.trace.ethz.ch/publications/2019/GCMA_UIoU/
 
@@ -124,7 +106,7 @@ Citation required. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_dark_zurich.py
+python -m mess.prepare_datasets.prepare_dark_zurich
 ```
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
@@ -132,19 +114,19 @@ Download: https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_v
 
 ### MHP v1
 
-Detectron2 name: `mhp_v1_sem_seg_test`
+Registered name: `mhp_v1_sem_seg_test`
 
 Dataset page: https://github.com/ZhaoJ9014/Multi-Human-Parsing
 
 Paper: Li, J., Zhao, J., Wei, Y., Lang, C., Li, Y., Sim, T., ... & Feng, J. (2017). Multiple-human parsing in the wild. arXiv preprint arXiv:1705.07206.
 
-Licence: https://lv-mhp.github.io/
+Licence: https://lv-m hp.github.io/
 
 Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_mhp_v1.py
+python -m mess.prepare_datasets.prepare_mhp_v1
 ```
 If the download does not work, download the dataset manually from Google Drive and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
@@ -152,7 +134,7 @@ Google Drive: https://drive.google.com/uc?export=download&confirm=pbef&id=1hTS8Q
 
 ### FoodSeg103
 
-Detectron2 name: `foodseg103_sem_seg_test`
+Registered name: `foodseg103_sem_seg_test`
 
 Dataset page: https://xiongweiwu.github.io/foodseg103.html
 
@@ -164,7 +146,7 @@ Copyright notice required.
 
 Download the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_foodseg.py
+python -m mess.prepare_datasets.prepare_foodseg
 ```
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`).
 
@@ -172,7 +154,7 @@ Download: https://research.larc.smu.edu.sg/downloads/datarepo/FoodSeg103.zip
 
 ### ATLANTIS
 
-Detectron2 name: `atlantis_sem_seg_test`
+Registered name: `atlantis_sem_seg_test`
 
 Dataset page: https://github.com/smhassanerfani/atlantis
 
@@ -184,13 +166,13 @@ Citation requested. Images are under the Flickr terms of use.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_atlantis.py
+python -m mess.prepare_datasets.prepare_atlantis
 ```
 If the download does not work, download the git repo and place the subfolder `atlanis/atlanis` as folder `atlantis` in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
 ### DRAM
 
-Detectron2 name: `dram_sem_seg_test`
+Registered name: `dram_sem_seg_test`
 
 Dataset page: https://faculty.runi.ac.il/arik/site/artseg/Dram-Dataset.html
 
@@ -202,7 +184,7 @@ Citation required. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_dram.py
+python -m mess.prepare_datasets.prepare_dram
 ```
 The DRAM dataset is compressed in a rar file. You may need to install unrar to extract it: `sudo apt install unrar`.
 
@@ -214,7 +196,7 @@ Download: https://faculty.runi.ac.il/arik/site/artseg/DRAM_processed.zip
 
 ### iSAID
 
-Detectron2 name: `isaid_sem_seg_val`
+Registered name: `isaid_sem_seg_val`
 
 Dataset page: https://captain-whu.github.io/iSAID/dataset.html
 
@@ -228,7 +210,7 @@ Images are under the "Google Earth" terms of use.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_isaid.py
+python -m mess.prepare_datasets.prepare_isaid
 ```
 The original dataset consists of very large tiles. We are using non-overlapping 1024x1024 patches with zero-padding, which is ignored during evaluation.
 
@@ -240,7 +222,7 @@ Google Drive masks: https://drive.google.com/drive/folders/1jlVr4ClmeBA01IQYx7Aq
 
 ### ISPRS Potsdam
 
-Detectron2 name: `isprs_potsdam_sem_seg_test_irrg` (IRRG, used in MESS) and `isprs_potsdam_sem_seg_test_rgb` (RGB)
+Registered name: `isprs_potsdam_sem_seg_test_irrg` (IRRG, used in MESS) and `isprs_potsdam_sem_seg_test_rgb` (RGB)
 
 Dataset page: https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx
 
@@ -252,7 +234,7 @@ Upon personal request to the challenge organizers: Citation required. Notice of 
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_isprs_potsdam.py
+python -m mess.prepare_datasets.prepare_isprs_potsdam
 ```
 The script creates an IRRG and RGB colormap. The main evaluation uses the IRRG images.
 
@@ -264,13 +246,13 @@ Download: https://www.isprs.org/education/benchmarks/UrbanSemLab/default.aspx
 
 ### WorldFloods
 
-Detectron2 name: `worldfloods_sem_seg_test_irrg` (IRRG, used in MESS) and `worldfloods_sem_seg_test_rgb` (RGB)
+Registered name: `worldfloods_sem_seg_test_irrg` (IRRG, used in MESS) and `worldfloods_sem_seg_test_rgb` (RGB)
 
 Dataset page: https://spaceml-org.github.io/ml4floods/content/worldfloods_dataset.html
 
 Dataset download: https://gigatron.uv.es/owncloud/index.php/s/JhNwsrrwDt80Vqc
 
-Paper: Mateo-Garcia, G., Veitch-Michaelis, J., Smith, L., Oprea, S. V., Schumann, G., Gal, Y., ... & Backes, D. (2021). Towards global flood mapping onboard low cost satellites with machine learning. Scientific reports, 11(1), 1-12.
+Paper: Mateo-Garcia, G., Veitch-m ichaelis, J., Smith, L., Oprea, S. V., Schumann, G., Gal, Y., ... & Backes, D. (2021). Towards global flood mapping onboard low cost satellites with machine learning. Scientific reports, 11(1), 1-12.
 
 Licence: [CC NC 4.0] (https://gigatron.uv.es/owncloud/index.php/s/JhNwsrrwDt80Vqc#editor)
 
@@ -278,7 +260,7 @@ Citation (Attribution) required. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_worldfloods.py
+python -m mess.prepare_datasets.prepare_worldfloods
 ```
 The script creases an IRRG and RGB colormap. The main evaluation uses the IRRG images.
 
@@ -292,7 +274,7 @@ Google Drive: https://drive.google.com/drive/folders/1Bp1FXppikOpQrgth2lu5WjpYX7
 
 ### FloodNet
 
-Detectron2 name: `floodnet_sem_seg_test`
+Registered name: `floodnet_sem_seg_test`
 
 Dataset page: https://github.com/BinaLab/FloodNet-Supervised_v1.0
 
@@ -304,7 +286,7 @@ Citation and link required.
 
 Download the dataset from Google Drive and place it in the dataset folder as `FloodNet-Supervised_v1.0`. No further preprocessing is needed. You can check if the dataset is working by running:
 ```sh
-python mess/prepare_datasets/prepare_floodnet.py
+python -m mess.prepare_datasets.prepare_floodnet
 ```
 The original dataset consists of very large images. We are using non-overlapping 1024x1024 patches with zero-padding, which is ignored during evaluation.
 
@@ -313,7 +295,7 @@ Google Drive: https://drive.google.com/drive/folders/1leN9eWVQcvWDVYwNb2GCo5ML_w
 
 ### UAVid
 
-Detectron2 name: `uavid_sem_seg_val`
+Registered name: `uavid_sem_seg_val`
 
 Dataset page: https://uavid.nl
 
@@ -325,13 +307,13 @@ Citation (Attribution) required. Non-commercial use only.
 
 Please download the dataset from the website and place it in the project or dataset folder. Prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_uavid.py
+python -m mess.prepare_datasets.prepare_uavid
 ```
 The original dataset consists of very large tiles. We are using non-overlapping 1024x1024 patches with zero-padding, which is ignored during evaluation.
 
 ### Kvasir-Instrument
 
-Detectron2 name: `kvasir_instrument_sem_seg_test`
+Registered name: `kvasir_instrument_sem_seg_test`
 
 Dataset page: https://datasets.simula.no/kvasir-instrument/
 
@@ -343,7 +325,7 @@ Citation required. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_kvasir_instrument.py
+python -m mess.prepare_datasets.prepare_kvasir_instrument
 ```
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Also untar the image folders. Then run the script again.
 
@@ -351,7 +333,7 @@ Download: https://datasets.simula.no/downloads/kvasir-instrument.zip
 
 ### CHASE BD1
 
-Detectron2 name: `chase_db1_sem_seg_test`
+Registered name: `chase_db1_sem_seg_test`
 
 Dataset page: https://blogs.kingston.ac.uk/retinal/chasedb1/
 
@@ -363,7 +345,7 @@ Citation (Attribution) required.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_chase_db1.py
+python -m mess.prepare_datasets.prepare_chase_db1
 ```
 
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
@@ -372,7 +354,7 @@ Download: https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip
 
 ### CryoNuSeg
 
-Detectron2 name: `cryonuseg_sem_seg_test`
+Registered name: `cryonuseg_sem_seg_test`
 
 Dataset page: https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images
 
@@ -384,13 +366,13 @@ Citation (Attribution) required. Non-commercial use only.
 
 Download the dataset manually from [Kaggle](https://www.kaggle.com/datasets/ipateam/segmentation-of-nuclei-in-cryosectioned-he-images), place the directory into the project root and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_cryonuseg.py
+python -m mess.prepare_datasets.prepare_cryonuseg
 ```
 CryoNuSeg only includes a test set. Other datasets can be used for training.
 
 ### PAXRay-4
 
-Detectron2 name: `paxray_sem_seg_test_lungs paxray_sem_seg_test_bones paxray_sem_seg_test_mediastinum paxray_sem_seg_test_diaphragm` (Multi-label segmentation)
+Registered name: `paxray_sem_seg_test_lungs paxray_sem_seg_test_bones paxray_sem_seg_test_mediastinum paxray_sem_seg_test_diaphragm` (Multi-label segmentation)
 
 Dataset page: https://constantinseibold.github.io/paxray/
 
@@ -402,7 +384,7 @@ Citation requested.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_paxray.py
+python -m mess.prepare_datasets.prepare_paxray
 ```
 We are only evaluating on the 4 superclasses (lungs, mediastinum, bones, diaphragm). Because of overlapping masks, each class is a binary segmentation tasks. We average the results of each class.
 
@@ -412,7 +394,7 @@ Google Drive: https://drive.google.com/file/d/19HPPhKf9TDv4sO3UV-nI3Jhi4nCv_Zyc/
 
 ### Corrosion CS
 
-Detectron2 name: `corrosion_cs_sem_seg_test`
+Registered name: `corrosion_cs_sem_seg_test`
 
 Dataset page: https://figshare.com/articles/dataset/Corrosion_Condition_State_Semantic_Segmentation_Dataset/16624663
 
@@ -424,7 +406,7 @@ Citation requested.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_corrosion_cs.py
+python -m mess.prepare_datasets.prepare_corrosion_cs
 ```
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
@@ -432,7 +414,7 @@ Download: https://figshare.com/ndownloader/files/31729733
 
 ### DeepCrack
 
-Detectron2 name: `deepcrack_sem_seg_test`
+Registered name: `deepcrack_sem_seg_test`
 
 Dataset page: https://github.com/yhlleo/DeepCrack/tree/master
 
@@ -444,13 +426,13 @@ Citation requested.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_deepcrack.py
+python -m mess.prepare_datasets.prepare_deepcrack
 ```
 If the download does not work, download the git repo manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
 ### PST900
 
-Detectron2 name: `pst900_sem_seg_test` (thermal, used in MESS), `pst900_sem_seg_test_rgb` (RGB), `pst900_sem_seg_test_pseudo` (Thermal pseudo color map)
+Registered name: `pst900_sem_seg_test` (thermal, used in MESS), `pst900_sem_seg_test_rgb` (RGB), `pst900_sem_seg_test_pseudo` (Thermal pseudo color map)
 
 Dataset page: https://github.com/ShreyasSkandanS/pst900_thermal_rgb
 
@@ -462,17 +444,17 @@ Citation required.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_pst900.py
+python -m mess.prepare_datasets.prepare_pst900
 ```
 We are using the thermal images as input (grayscale).
 
 If the download does not work, download the dataset manually from Google Drive and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Run the script again to generate thermal images with a pseudo colorscale.
 
-Google Drive: https://drive.google.com/open?id=1hZeM-MvdUC_Btyok7mdF00RV-InbAadm
+Google Drive: https://drive.google.com/open?id=1hZeM-m vdUC_Btyok7mdF00RV-InbAadm
 
 ### ZeroWaste-f
 
-Detectron2 name: `zerowaste_sem_seg_test`
+Registered name: `zerowaste_sem_seg_test`
 
 Dataset page: http://ai.bu.edu/zerowaste/
 
@@ -484,7 +466,7 @@ Citation (Attribution) required. Non-commercial use only.
 
 Download the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_zerowaste.py
+python -m mess.prepare_datasets.prepare_zerowaste
 ```
 If the download does not work, download the dataset manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`).
 
@@ -492,7 +474,7 @@ Download: https://zenodo.org/record/6412647/files/zerowaste-f-final.zip
 
 ### SUIM
 
-Detectron2 name: `suim_sem_seg_test`
+Registered name: `suim_sem_seg_test`
 
 Dataset page: https://irvlab.cs.umn.edu/resources/suim-dataset
 
@@ -504,7 +486,7 @@ It is unclear whether the dataset is licensed under MIT or if the license cover 
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_suim.py
+python -m mess.prepare_datasets.prepare_suim
 ```
 If the download does not work, download the dataset manually from Google Drive and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
@@ -512,7 +494,7 @@ Google Drive: https://drive.google.com/drive/folders/10KMK0rNB43V2g30NcA1RYipL53
 
 ### CUB-200
 
-Detectron2 name: `cub_200_sem_seg_test`
+Registered name: `cub_200_sem_seg_test`
 
 Dataset page: https://www.vision.caltech.edu/datasets/cub_200_2011/
 
@@ -524,7 +506,7 @@ Citation required. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_cub_200.py
+python -m mess.prepare_datasets.prepare_cub_200
 ```
 If the download does not work, download the images and annotations manually and place the unzipped dataset in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 
@@ -536,7 +518,7 @@ Annotations: https://data.caltech.edu/records/w9d68-gec53/files/segmentations.tg
 
 ### CWFID
 
-Detectron2 name: `cwfid_sem_seg_test`
+Registered name: `cwfid_sem_seg_test`
 
 Dataset page: https://github.com/cwfid/dataset
 
@@ -548,7 +530,7 @@ Citiation requested. Non-commercial use only.
 
 Download and prepare the dataset by running:
 ```sh
-python mess/prepare_datasets/prepare_cwfid.py
+python -m mess.prepare_datasets.prepare_cwfid
 ```
 If the download does not work, download the git repo manually and place the dataset folder as `cwfid` in your Detectron2 dataset folder (default: `datasets/`). Then run the script again.
 

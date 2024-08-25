@@ -3,8 +3,12 @@
 
 import os
 import argparse
-from detectron2.data import DatasetCatalog
-from prepare_datasets import (
+try:
+    from detectron2.data import DatasetCatalog
+except:
+    from mess.utils.catalog import DatasetCatalog
+
+from mess.prepare_datasets import (
     prepare_bdd100k,
     prepare_mhp_v1,
     prepare_foodseg,
@@ -92,7 +96,8 @@ if __name__ == '__main__':
     # set dataset directory and register datasets
     os.environ['DETECTRON2_DATASETS'] = args.dataset_dir
     os.makedirs(args.dataset_dir, exist_ok=True)
-    import datasets
+    # Register datasets
+    import mess.datasets
 
     # prepare datasets
     dataset_dict = {

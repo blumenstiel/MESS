@@ -9,10 +9,14 @@ import os
 from collections import OrderedDict
 import torch
 
-from detectron2.data import MetadataCatalog
-from detectron2.utils.comm import all_gather, is_main_process, synchronize
-from detectron2.utils.file_io import PathManager
-from detectron2.evaluation import SemSegEvaluator
+try:
+    from detectron2.data import MetadataCatalog
+    from detectron2.utils.comm import all_gather, is_main_process, synchronize
+    from detectron2.utils.file_io import PathManager
+    from detectron2.evaluation import SemSegEvaluator
+except:
+    raise ImportError('Please install detectron2 to use the MESSSemSegEvaluator. '
+                      'See https://github.com/facebookresearch/detectron2 for details.')
 
 
 class MESSSemSegEvaluator(SemSegEvaluator):

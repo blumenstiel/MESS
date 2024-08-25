@@ -1,0 +1,11 @@
+torch
+torchvision
+pandas
+numpy
+rasterio
+gdown
+opencv-python
+iopath
+pillow
+tqdm
+matplotlib
