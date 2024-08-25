@@ -4,7 +4,12 @@
 import os
 import argparse
 
-from prepare_datasets import (
+try:
+    from detectron2.data import DatasetCatalog
+except:
+    from mess.utils.catalog import DatasetCatalog
+
+from mess.in_domain.prepare_datasets import (
     prepare_ade20k_sem_seg,
     prepare_ade20k_full_sem_seg,
     prepare_pascal_context_59,
@@ -22,8 +27,8 @@ if __name__ == '__main__':
     # set dataset directory
     os.environ['DETECTRON2_DATASETS'] = args.dataset_dir
     os.makedirs(args.dataset_dir, exist_ok=True)
-    from detectron2.data import DatasetCatalog
-    import datasets
+
+    import mess.in_domain.datasets
 
     # prepare datasets
     dataset_dict = {

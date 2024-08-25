@@ -2,10 +2,14 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 import os
 
-from detectron2.data import DatasetCatalog, MetadataCatalog
-from detectron2.data.datasets import load_sem_seg
-from detectron2.utils.colormap import colormap
-
+try:
+    from detectron2.data import DatasetCatalog, MetadataCatalog
+    from detectron2.data.datasets import load_sem_seg
+    from detectron2.utils.colormap import colormap
+except:
+    from mess.utils.catalog import DatasetCatalog, MetadataCatalog
+    from mess.utils.data import load_sem_seg
+    from mess.utils.colormap import colormap
 
 # Lists from CAT-Seg (OVSeg uses another ordering)
 PASCALCONTEX59_NAMES = ["aeroplane", "bag", "bed", "bedclothes", "bench", "bicycle", "bird", "boat", "book", "bottle", "building", "bus", "cabinet", "car", "cat", "ceiling", "chair", "cloth", "computer", "cow", "cup", "curtain", "dog", "door", "fence", "floor", "flower", "food", "grass", "ground", "horse", "keyboard", "light", "motorbike", "mountain", "mouse", "person", "plate", "platform", "pottedplant", "road", "rock", "sheep", "shelves", "sidewalk", "sign", "sky", "snow", "sofa", "diningtable", "track", "train", "tree", "truck", "tvmonitor", "wall", "water", "window", "wood"]
