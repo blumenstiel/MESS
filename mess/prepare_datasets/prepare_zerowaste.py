@@ -9,6 +9,7 @@ def download_dataset(ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://zenodo.org/record/6412647/files/zerowaste-f-final.zip')

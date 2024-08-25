@@ -181,6 +181,7 @@ def download_dataset(ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Download from Google Drive
     # https://drive.google.com/file/d/19HPPhKf9TDv4sO3UV-nI3Jhi4nCv_Zyc/view?usp=share_link

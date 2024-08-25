@@ -22,6 +22,7 @@ def download_dataset(dataset_dir, ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     if Path('uavid_v1.5_official_release_image.zip').exists():
         file_path = 'uavid_v1.5_official_release_image.zip'
     elif (dataset_dir / 'uavid_v1.5_official_release_image.zip').exists():

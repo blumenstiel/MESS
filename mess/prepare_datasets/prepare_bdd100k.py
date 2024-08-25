@@ -23,6 +23,7 @@ def download_dataset(dataset_dir):
 
     os.system(f'unzip {zip_dir / "bdd100k_images_10k.zip"} -d {dataset_dir}')
     os.system(f'unzip {zip_dir / "bdd100k_sem_seg_labels_trainval.zip"} -d {dataset_dir}')
+    dataset_dir.mkdir(exist_ok=True, parents=True)
     os.system(f'rm {zip_dir / "bdd100k_images_10k.zip"}')
     os.system(f'rm {zip_dir / "bdd100k_sem_seg_labels_trainval.zip"}')
 

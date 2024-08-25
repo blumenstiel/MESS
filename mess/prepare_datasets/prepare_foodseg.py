@@ -16,6 +16,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://research.larc.smu.edu.sg/downloads/datarepo/FoodSeg103.zip')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('unzip -P LARCdataset9947 FoodSeg103.zip -d ' + str(ds_path))
     os.system('rm FoodSeg103.zip')
 

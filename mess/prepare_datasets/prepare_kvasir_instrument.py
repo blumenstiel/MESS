@@ -12,6 +12,8 @@ def download_dataset(dataset_dir, ds_path):
     """
     Downloads the dataset
     """
+    dataset_dir.mkdir(exist_ok=True, parents=True)
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     os.system("wget https://datasets.simula.no/downloads/kvasir-instrument.zip")
     os.system("unzip kvasir-instrument.zip -d " + str(dataset_dir))

@@ -15,6 +15,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://staffnet.kingston.ac.uk/~ku15565/CHASE_DB1/assets/CHASEDB1.zip')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('unzip CHASEDB1.zip -d ' + str(ds_path))
     os.system('rm CHASEDB1.zip')
 

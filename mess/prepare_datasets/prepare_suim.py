@@ -35,6 +35,7 @@ def download_dataset(ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Downloading zip
     gdown.download(id='1diN3tNe2nR1eV3Px4gqlp6wp3XuLBwDy')

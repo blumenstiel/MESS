@@ -20,6 +20,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading dataset from git repo
     os.system('git clone https://github.com/cwfid/dataset.git')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('mv dataset ' + str(ds_path))
 
 

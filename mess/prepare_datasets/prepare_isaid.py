@@ -33,6 +33,7 @@ def download_dataset(ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Download from Google Drive
     # Download val images https://drive.google.com/drive/folders/1RV7Z5MM4nJJJPUs6m9wsxDOJxX6HmQqZ?usp=share_link4

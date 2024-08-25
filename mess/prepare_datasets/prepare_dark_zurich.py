@@ -20,6 +20,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://data.vision.ee.ethz.ch/csakarid/shared/GCMA_UIoU/Dark_Zurich_val_anon.zip')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('unzip Dark_Zurich_val_anon.zip -d ' + str(ds_path))
     os.system('rm Dark_Zurich_val_anon.zip')
 

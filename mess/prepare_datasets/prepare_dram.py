@@ -41,6 +41,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://faculty.runi.ac.il/arik/site/artseg/DRAM_processed.zip')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('unzip DRAM_processed.zip -d ' + str(ds_path))
     os.system(f'cd {ds_path} && unrar x DRAM_processed.rar')
     os.system('rm DRAM_processed.zip')

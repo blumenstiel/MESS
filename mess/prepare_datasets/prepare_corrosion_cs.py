@@ -22,6 +22,7 @@ def download_dataset(dataset_dir):
     # Downloading zip
     #
     os.system('wget https://figshare.com/ndownloader/files/31729733')
+    dataset_dir.mkdir(exist_ok=True, parents=True)
     os.system('unzip 31729733 -d ' + str(dataset_dir))
     os.system('rm 31729733')
 

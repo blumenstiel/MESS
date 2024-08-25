@@ -15,6 +15,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading git repo with zip
     os.system('git clone https://github.com/yhlleo/DeepCrack.git')
+    ds_path.mkdir(exist_ok=True, parents=True)
     os.system('unzip DeepCrack/dataset/DeepCrack.zip -d ' + str(ds_path))
     os.system('rm -R DeepCrack')
 

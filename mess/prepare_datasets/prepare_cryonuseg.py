@@ -13,6 +13,7 @@ def check_dataset(dataset_dir, ds_path):
     """
     Check dataset and rename it
     """
+    dataset_dir.mkdir(exist_ok=True, parents=True)
     KAGGLE_DIR_NAME = 'archive'
     if os.path.exists(KAGGLE_DIR_NAME):
         # Move Kaggle dir to dataset directroy

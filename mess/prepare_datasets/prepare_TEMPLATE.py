@@ -14,6 +14,7 @@ def download_dataset(ds_path):
     Downloads the dataset
     """
     # TODO: Add an automated script if possible, otherwise remove code
+    ds_path.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Downloading zip
     os.system('wget https://link/to/DATASET.zip')

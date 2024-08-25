@@ -45,6 +45,7 @@ def unzip_dataset(dataset_dir, ds_path):
     """
     Downloads the dataset
     """
+    ds_path.mkdir(exist_ok=True, parents=True)
     if Path('Potsdam.zip').exists():
         file_path = 'Potsdam.zip'
     elif (dataset_dir / 'Potsdam.zip').exists():

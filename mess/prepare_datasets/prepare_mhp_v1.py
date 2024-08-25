@@ -14,6 +14,7 @@ def download_dataset(dataset_dir):
     """
     Downloads the dataset
     """
+    dataset_dir.mkdir(exist_ok=True, parents=True)
     print('Downloading dataset...')
     # Download from Google Drive
     gdown.download(f"https://drive.google.com/uc?export=download&confirm=pbef&id=1hTS8QJBuGdcppFAr_bvW2tsD9hW_ptr5")

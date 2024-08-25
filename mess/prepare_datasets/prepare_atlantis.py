@@ -18,6 +18,7 @@ def download_dataset(ds_path):
     print('Downloading dataset...')
     # Downloading github repo
     os.system('git clone https://github.com/smhassanerfani/atlantis.git')
+    ds_path.mkdir(exist_ok=True, parents=True)
     # Move images and masks to dataset folder
     os.system('mv atlantis/atlantis ' + str(ds_path))
     # Delete github repo
